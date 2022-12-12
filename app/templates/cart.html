@@ -1,0 +1,44 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<h1 class="text-center text-success">Vé Chọn</h1>
+
+{% if 'cart' in session and session['cart'] %}
+<table class="mx-auto table" style="width:60%">
+    <tr>
+        <th>id</th>
+        <th>Tên</th>
+        <th>Đơn giá</th>
+        <th>Số lượng</th>
+    </tr>
+    {% for f in session['cart'].values() %}
+    <tr id="cart{{ f.id }}">
+        <td>{{ f.id }}</td>
+        <td>{{ f.name }}</td>
+        <td>{{ "{:,.0f}".format(f.price) }} VNĐ</td>
+        <td style="width: 15%">
+            <input type="number" onblur="updateCart({{ f.id }}, this)" value="{{ f.quantity }}" class="form-control"/>
+        </td>
+        <td>
+            <input type="button" value="Xóa" onclick="deleteCart({{ f.id }})" class="btn btn-danger"/>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div class="alert alert-info">
+    <h3>Tổng sản phẩm: <span class="cart-counter">{{ cart.total_quantity }}</span></h3>
+    <h3>Tổng tiền: <span class="cart-amount">{{ "{:,.0f}".format(cart.total_amount) }}</span> VNĐ</h3>
+</div>
+
+<div class="mb-3">
+    {% if current_user.is_authenticated %}
+    <input type="button" onclick="pay()" value="Thanh toán" class="btn btn-success"/>
+    {% else %}
+    <p>Vui lòng <a href="/login?next=/cart">đăng nhập</a> để thanh toán!</p>
+    {% endif %}
+</div>
+{% else %}
+<p>Không có chuyến bay!</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,46 @@
+<nav class="navbar navbar-expand-sm bg-white navbar-white">
+    <div class="container-fluid">
+        <a class="navbar-brand text-dark" href="/"><i class='bx bxs-plane-alt'></i>Flight</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav me-auto">
+                {% for cate in categories %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/?category_id={{ cate.id }}">{{ cate.name }}</a>
+                </li>
+                {% endfor %}
+
+                <li class="nav-item">
+                    <a class="nav-link text-secondary" href="/cart"> <i style="font-size:25px" class='bx bxs-cart'></i> <span class="badge bg-danger cart-counter">{{cart.total_quantity}}</span></a>
+                </li>
+            </ul>
+            <form class="d-flex" action="/">
+                <ul class="navbar-nav me-auto">
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link text-success" href="/">
+                            <img width="40" class="rounded-circle" src="{{ current_user.avatar }}" alt="{{ current_user.name }}" />
+                            Chào {{ current_user.name }}!
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="/logout">Đăng xuất</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item d-flex align-items-center">
+                        <i class='bx bxs-user-circle'></i>
+                        <small><a class="nav-link text-success" href="/login">Đăng nhập</a></small>
+                    </li>
+                    <li class="nav-item">
+                        <small><a class="nav-link text-danger" href="/register">Đăng ký</a></small>
+                    </li>
+                    {% endif %}
+                </ul>
+<!--                <input class="form-control me-2" name="keyword" type="text" placeholder="Nhập từ khóa...">-->
+<!--                <button class="btn btn-primary" type="submit">Tìm</button>-->
+            </form>
+        </div>
+    </div>
+</nav>

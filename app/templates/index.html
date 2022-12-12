@@ -1,0 +1,129 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+
+<div class="position-relative">
+    <img src="https://res.cloudinary.com/dcwl3jhhm/image/upload/v1670201249/samples/landscapes/polynesia-3021072_960_720_mvc5yj.jpg"/
+    alt="" style="width: 100%" class="img-fluid d-none d-xl-block">
+    <div class="d-none d-xl-block position-absolute start-50 top-50 translate-middle" style="">
+        <p class="fw-bold text-white fs-2">Nếu không thể tìm được bạn đồng hành, hãy cứ đi...</p>
+        <div class="rounded p-3 bg-cp" style="width: 1000px">
+            <div>
+                <h5>Xin chào, bạn muốn đi đâu?</h5>
+                <form action="{{ url_for('index') }}">
+                <div class="d-flex align-items-center py-2">
+                    <div>
+                        <label for="exampleDataList" class="form-label fw-bold fs-8 m-0">Từ</label>
+                        <input name="depart" class="form-control inp-height inp-width" list="datalistOptions" id="exampleDataList"
+                               placeholder="Chọn điểm đi" required>
+
+                        <datalist  id="datalistOptions">
+                            <option value="Hồ Chí Minh">
+                            <option value="Hà Nội">
+                            <option value="Đà Nẵng">
+                            <option value="Đà Lạt">
+                            <option value="Phú Quốc">
+                        </datalist>
+                    </div>
+                    <div>
+                        <label for="exampleDataList" class="form-label fw-bold fs-8 m-0">Đến</label>
+                        <input name="arrival" class="form-control inp-height inp-width" list="datalistOptions1" id="exampleDataList1"
+                               placeholder="Chọn điểm đến" required>
+                        <datalist id="datalistOptions1">
+                            <option value="Hồ Chí Minh">
+                            <option value="Hà Nội">
+                            <option value="Đà Nẵng">
+                            <option value="Đà Lạt">
+                            <option value="Phú Quốc">
+                        </datalist>
+                    </div>
+                    <div>
+                        <label class="fw-bold fs-8">Ngày đi</label>
+                        <input name="time" type="date" id="datetime" class="form-control inp-height inp-width">
+                    </div>
+                    <div>
+                        <label for="exampleDataList" class="form-label fw-bold fs-8 m-0">Hạng vé</label>
+                        <input name="hangve" class="form-control inp-height inp-width" list="datalistOptions3" id="exampleDataList1"
+                               placeholder="Chọn hạng ghế" required>
+                        <datalist id="datalistOptions3">
+                            <option value="Hạng 1(Thương gia)">
+                            <option value="Hạng 2(Phổ thông)">
+                        </datalist>
+                    </div>
+                </div>
+                <div class="align-items-center ms-auto">
+                    <input id="btn" type="submit" class="btn btn-dark fw-bold btn-lg inp-width" value="TÌM CHUYẾN BAY"/>
+                </div>
+                </form>
+            </div>
+            <div >
+                <p class="bg-dark mt-3" style="height: 2px" ></p>
+                <h4 class="text-center text-success">Danh Sách Chuyến Bay</h4>
+                <b class="mb-3"><span style="color: red">Chú ý:</span> chỉ đặt cho các chuyến bay trước 12h lúc khởi hành</b>
+                {% if flights %}
+                <p><span>Từ</span> {{ depart }}<span> Đến</span> {{ arrival }}</p>
+                <table class="table">
+                    <tr>
+                        <th>Tên</th>
+                        <th>Từ</th>
+                        <th>Đến</th>
+                        <th>Đơn giá</th>
+                    </tr>
+                    {% for f in flights %}
+                    <tr>
+                        <td>{{ f.name }}</td>
+                        <td>{{ f.time_de }}</td>
+                        <td>{{ f.time_ar }}</td>
+                        {% if hangve == "Hạng 2(Phổ thông)" %}
+                        <td>{{ "{:,.0f}".format(f.price) }} VNĐ</td>
+                        {% else %}
+                        <td>{{ "{:,.0f}".format(f.price_1) }} VNĐ</td>
+                        {% endif %}
+
+                        <td>
+                            <a href="javascript:;"
+                               onclick="addToCart({{ f.id }}, '{{ f.name }}', {{ f.price }})"
+                               class="btn btn-danger">Chọn</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <p>Không có chuyến bay!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mg-section">
+    <div class="text-center content">
+        <h2 class="h1-responsive font-weight-bold text-center my-4">Dịch vụ tối ưu</h2>
+        <p class="text-center w-responsive mx-auto mb-3">Chúng tôi luôn cố gắng để đem đến cho bạn các dịch vụ tốt nhất</p>
+    </div>
+    <div class="row text-center">
+        <div class="col-sm d-flex justify-content-center">
+            <div class="img"><img src="https://res.cloudinary.com/dfzvtpwsd/image/upload/v1670079765/icon-lights_stg33m.svg"></div>
+            <div class="ms-4">
+                <h5 class="fw-bolder">Tiết kiệm</h5>
+                <p class="fst-italic">Dễ dàng so sánh giá<br>Tiết kiệm thời gian</p>
+            </div>
+        </div>
+        <div class="col-sm d-flex justify-content-center">
+            <div class="img"><img src="https://res.cloudinary.com/dfzvtpwsd/image/upload/v1670079767/icon-clock_ym6g9i.svg"></div>
+            <div class="ms-4">
+                <h5 class="fw-bolder">Tiết kiệm</h5>
+                <p class="fst-italic">Dễ dàng so sánh giá<br>Tiết kiệm thời gian</p>
+            </div>
+        </div>
+        <div class="col-sm d-flex justify-content-center">
+            <div class="img"><img src="https://res.cloudinary.com/dfzvtpwsd/image/upload/v1670079765/icon-like_rjgycv.svg"></div>
+            <div class="ms-4">
+                <h5 class="fw-bolder">Tin cậy</h5>
+                <p class="fst-italic">Thanh toán an toàn<br>Đảm bảo tin cậy</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
